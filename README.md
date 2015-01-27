@@ -89,7 +89,9 @@
     ```
     It will browserify our code from the entry file, we can have mutiple entries.
 
-    The **watchify** is used too!
+    The **watchify** is used too to speed up.
+
+    The **browserify-shim** should be set up in package.json
 
   **`watch` task**
 
@@ -98,5 +100,4 @@
   gulp.watch(config.script.src, ['javascript']);
   gulp.watch(config.style.src, ['sass']);
   ```
-  gulp watch will deal with `javascript` and `sass` task. And the watchify will deal with browserify code watch.# gulp-for-shim
-# gulp-for-shim
+  gulp watch will deal with `javascript` and `sass` task. And the watchify will deal with browserify code watch.

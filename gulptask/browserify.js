@@ -37,8 +37,7 @@ module.exports = function () {
             var stream = bundler.bundle();
 
             return stream.on('error', function (error) {
-                console.log(arguments);
-                gutil.colors.red(error);
+                gutil.log(gutil.colors.red(error));
             })
                 .pipe(source(bundleConfig.outputName))
                 //.pipe(buffer())

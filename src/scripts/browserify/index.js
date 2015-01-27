@@ -1,5 +1,6 @@
 var dir = require('./dir');
+var jq = require('jquery');
 
 
-console.log($.fn.jquery);
+console.log(jq().jquery);
 console.log(dir());

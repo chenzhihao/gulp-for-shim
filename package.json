@@ -10,8 +10,12 @@
     "transform": [ "browserify-shim" ]
   },
 
-   "browserify-shim": {
-     "./src/scripts/vendor/jquery.js"    :  "global:jquery"
+  "browser": {
+    "jquery": "./src/scripts/vendor/jquery.js"
+  },
+
+  "browserify-shim": {
+    "jquery": "$"
   },
 
   "author": "",

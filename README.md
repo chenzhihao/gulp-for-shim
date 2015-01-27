@@ -99,3 +99,4 @@
   gulp.watch(config.style.src, ['sass']);
   ```
   gulp watch will deal with `javascript` and `sass` task. And the watchify will deal with browserify code watch.# gulp-for-shim
+# gulp-for-shim

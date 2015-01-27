@@ -40,10 +40,10 @@ module.exports = function () {
                 gutil.log(gutil.colors.red(error));
             })
                 .pipe(source(bundleConfig.outputName))
-                //.pipe(buffer())
-                //.pipe(sourcemaps.init({loadMaps: true}))
-                //.pipe(uglify())
-                //.pipe(sourcemaps.write())
+                .pipe(buffer())
+                .pipe(sourcemaps.init({loadMaps: true}))
+                .pipe(uglify())
+                .pipe(sourcemaps.write())
                 .pipe(gulp.dest(bundleConfig.dest));
         }
 

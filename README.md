@@ -92,7 +92,38 @@
     The **watchify** is used too to speed up.
 
     The **browserify-shim** should be set up in package.json
+    
+    for example:
+   
+    ```json
+    //in package.json
+    "browser": {
+        "jquery": "./src/scripts/vendor/jquery.js"
+    },
 
+    "browserify-shim": {
+        "jquery": "$",
+        "react": "global:React"
+    },
+    ```
+    ```html
+    // in index.html
+    <script src="/javascript/vendor/react.js"></script>
+    <script src="/javascript/browserify/bundle.js"></script>
+    ```
+    
+    ```js
+    // in bundleEntry.js
+    var dir = require('./dir');
+    var jq = require('jquery');
+    var react = require('react');
+
+    console.log(jq().jquery);
+    console.log(react.version);
+    console.log(dir());
+    ```
+    this example shows how to bundle jquery into our bundle.js and attach it to window.$, and also we import window.React as a module by require("react").
+  
   **`watch` task**
 
   ```js

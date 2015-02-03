@@ -15,7 +15,8 @@
   },
 
   "browserify-shim": {
-    "jquery": "$"
+    "jquery": "$",
+    "react": "global:React"
   },
 
   "author": "",

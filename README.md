@@ -1,61 +1,60 @@
-#my gulpfile scaffold
+# Gulpfile scaffold
 
-</br>
+This is a gulpfile scaffold for a typical WebApp frontend project
 
-1. Each task is split into the 'gulptask' folder. And in the `'/gulptask/index.js'`, we have this:
+Each task is split into the 'gulptask' folder. And in the `'/gulptask/index.js'`, we have this
 
-    ```js
-    var path = require('path');
-    var gulp = require('gulp');
+```js
+var path = require('path');
+var gulp = require('gulp');
 
-    module.exports = function (tasks) {
-      tasks.forEach(function (name) {
-        gulp.task(name, require(path.join(__dirname, name)));
-      });
+module.exports = function (tasks) {
+  tasks.forEach(function (name) {
+    gulp.task(name, require(path.join(__dirname, name)));
+  });
 
-      return gulp;
-    };
-    ```
+  return gulp;
+};
+```
 
-    so that's easy to register all our tasks in the entry file `'gulpfile.js'`:
+so that's easy to register all our tasks in the entry file `'gulpfile.js'`:
 
-    ```js
-    var gulp = require('gulp');
+```js
+var gulp = require('gulp');
 
-    require('./gulptask')([
-      'javascript',
-      'sass',
-      'watch',
-      'browserify'
-    ]);
-    ```
+require('./gulptask')([
+  'javascript',
+  'sass',
+  'watch',
+  'browserify'
+]);
+```
 
-    (In fact gulp will export a singleton instance, you can also register your tasks in single file. This depends on ourself.)
+In fact gulp will export a singleton instance, you can also register your tasks in single file. This depends on your use case.
 
-2. I have 4 tasks currently. Let's have a look into it.
+### Task usage
 
- **`javascript` task**:
-
+- `javacript` task
     All our configuration is in the `'gulpconfig.js'` file. check it:
-
     ```js
-    ...
-    //'gulpconfig.js' file
-    script: {
-      src: src + 'scripts/non-browserify/**/*.js ',
-      vendor: ['jquery.js','selectivizr.js'],
-      dest: dest + 'javascript'
-    },
-    ...
+        //'gulpconfig.js' file
+        script: {
+          src: src + 'scripts/non-browserify/**/*.js ',
+          vendor: ['jquery.js','selectivizr.js'],
+          dest: dest + 'javascript'
+        },
+        ...
+        
     ```
 
     so all our vendor libs in the `'src/scripts/vendor/*.js'` will be concatenated and uglified together. The sequence of them will be just as the sequence in the `'vendor'` array. It means `jquery.js` will be the first one and `selectivizr.js` will be the second one to concat.
 
     After all the libs are concatenated, our own code in the `'src/scripts/non-browserify/**/*.js'` will concat togther. Finally our code here will concat to `'htdocs/javascript/script.js'`
-
-   **`sass` task**:
+   
+ - `sass` task:
 
     All scss files will be compiled into css files. Check the configuration:
+    
     ```js
     ...
     //'gulpconfig.js' file
@@ -64,29 +63,32 @@
       vendor: src + 'stylesheets/vendor/**/*.css',
       dest: dest + 'css'
     },
+    
     ```
     Also the vendor css will be concat at first, like js vendor files.
 
-  **`Browserify` task:**
+- `Browserify` task:
 
-    As the configuration:
+    As the configuration
+
     ```js
-    ...
-    //'gulpconfig.js' file
-     browserify: {
-      // Enable source maps
-      debug: true,
-      // A separate bundle will be generated for each
-      // bundle config in the list below
-      bundleConfigs: [
-        {
-          entries: src + 'scripts/browserify/index.js',
-          dest: dest + 'javascript/browserify/',
-          outputName: 'bundle.js'
+        ...
+        //'gulpconfig.js' file
+         browserify: {
+          // Enable source maps
+          debug: true,
+          // A separate bundle will be generated for each
+          // bundle config in the list below
+          bundleConfigs: [
+            {
+              entries: src + 'scripts/browserify/index.js',
+              dest: dest + 'javascript/browserify/',
+              outputName: 'bundle.js'
+            }
+          ]
         }
-      ]
-    }
     ```
+    
     It will browserify our code from the entry file, we can have mutiple entries.
 
     The **watchify** is used too to speed up.
@@ -96,39 +98,44 @@
     for example:
    
     ```json
-    //in package.json
-    "browser": {
-        "jquery": "./src/scripts/vendor/jquery.js"
-    },
-
-    "browserify-shim": {
-        "jquery": "$",
-        "react": "global:React"
-    },
+    
+        //in package.json
+        "browser": {
+            "jquery": "./src/scripts/vendor/jquery.js"
+        },
+    
+        "browserify-shim": {
+            "jquery": "$",
+            "react": "global:React"
+        },
+        
     ```
+    
     ```html
-    // in index.html
-    <script src="/javascript/vendor/react.js"></script>
-    <script src="/javascript/browserify/bundle.js"></script>
+        // in index.html
+        <script src="/javascript/vendor/react.js"></script>
+        <script src="/javascript/browserify/bundle.js"></script>
     ```
     
     ```js
-    // in bundleEntry.js
-    var dir = require('./dir');
-    var jq = require('jquery');
-    var react = require('react');
-
-    console.log(jq().jquery);
-    console.log(react.version);
-    console.log(dir());
+        // in bundleEntry.js
+        var dir = require('./dir');
+        var jq = require('jquery');
+        var react = require('react');
+    
+        console.log(jq().jquery);
+        console.log(react.version);
+        console.log(dir());
     ```
+
     this example shows how to bundle jquery into our bundle.js and attach it to window.$, and also we import window.React as a module by require("react").
   
-  **`watch` task**
+ - `watch` task
 
-  ```js
-  //gulptask/watch.js
-  gulp.watch(config.script.src, ['javascript']);
-  gulp.watch(config.style.src, ['sass']);
-  ```
-  gulp watch will deal with `javascript` and `sass` task. And the watchify will deal with browserify code watch.
+      ```js
+      //gulptask/watch.js
+      gulp.watch(config.script.src, ['javascript']);
+      gulp.watch(config.style.src, ['sass']);
+      ```
+
+    **Gulp** watch will deal with `javascript` and `sass` task. And the watchify will deal with browserify code watch.
